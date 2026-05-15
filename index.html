@@ -34,15 +34,29 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxHK-v2YcLXfgX-AP2GqTSm
 let medicos = [];
 
 async function cargarDatos() {
+
   try {
-    const response = await fetch(API_URL);
+
+    console.log("Consultando API...");
+
+    const response = await fetch(API_URL, {
+      method: 'GET',
+      mode: 'cors'
+    });
+
+    console.log("Response:", response);
+
     medicos = await response.json();
 
+    console.log("Datos:", medicos);
+
     renderTabla(medicos);
+
     cargarEspecialidades();
 
   } catch (error) {
-    console.error(error);
+
+    console.error("ERROR:", error);
 
     document.getElementById('tablaMedicos').innerHTML = `
       <tr>
