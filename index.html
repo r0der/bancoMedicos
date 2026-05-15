@@ -3,343 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>AAPM – Directorio Médico</title>
-
+  <title>AAPM – Directorio de Médicos</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet" />
-
   <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --azul-oscuro: #0d2a6e;
+      --azul-medio: #1a3fa3;
+      --blanco: #ffffff;
+      --gris-fondo: #f0f4fb;
+      --sombra: 0 4px 24px rgba(13,42,110,0.13);
     }
-
-    body{
-      font-family:'Open Sans',sans-serif;
-      background:#f3f6fc;
-      color:#0d2a6e;
+    html, body { height: 100%; font-family: 'Open Sans', sans-serif; background: var(--gris-fondo); color: var(--azul-oscuro); }
+    header {
+      background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul-medio) 100%);
+      padding: 28px 20px 22px;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      box-shadow: var(--sombra); position: relative; overflow: hidden;
     }
-
-    header{
-      background:linear-gradient(135deg,#0d2a6e,#1a3fa3);
-      color:white;
-      padding:30px 20px;
-      text-align:center;
-      box-shadow:0 4px 18px rgba(0,0,0,0.15);
+    header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+    header::after  { content: ''; position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+    .logo-wrapper {
+      width: 110px; height: 110px; border-radius: 50%; background: var(--blanco);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25); padding: 4px; flex-shrink: 0; position: relative; z-index: 1;
     }
-
-    header h1{
-      font-family:'Montserrat',sans-serif;
-      font-size:2rem;
-      letter-spacing:3px;
-      margin-bottom:8px;
+    .logo-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+    .header-texto { text-align: center; position: relative; z-index: 1; }
+    .header-texto h1 { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(1.5rem, 5vw, 2.2rem); color: var(--blanco); letter-spacing: 3px; text-transform: uppercase; }
+    .header-texto .subtitulo { font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: clamp(0.68rem, 2.2vw, 0.85rem); color: rgba(255,255,255,0.72); letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; }
+    .divider { width: 48px; height: 3px; background: rgba(255,255,255,0.4); border-radius: 2px; margin: 6px auto 0; }
+    main { display: flex; flex-direction: column; padding: 20px 16px 24px; gap: 16px; max-width: 1400px; margin: 0 auto; width: 100%; }
+    .etiqueta-directorio { display: flex; align-items: center; gap: 10px; }
+    .etiqueta-directorio span { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.78rem; color: var(--azul-medio); text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; }
+    .etiqueta-directorio::after { content: ''; flex: 1; height: 1px; background: rgba(13,42,110,0.15); }
+    .notion-contenedor { width: 100%; background: var(--blanco); border-radius: 12px; box-shadow: var(--sombra); overflow: hidden; border: 1px solid rgba(13,42,110,0.09); }
+    .notion-contenedor iframe { width: 100%; height: 75vh; min-height: 500px; border: none; display: block; }
+    footer { text-align: center; padding: 14px 20px; font-size: 0.72rem; color: rgba(13,42,110,0.45); font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px; }
+    @media (min-width: 768px) {
+      header { flex-direction: row; justify-content: center; gap: 24px; padding: 32px 40px; }
+      .header-texto { text-align: left; }
+      .divider { margin: 6px 0 0; }
+      .logo-wrapper { width: 120px; height: 120px; }
+      .notion-contenedor iframe { height: 80vh; min-height: 600px; }
+      main { padding: 28px 32px 32px; }
     }
-
-    header p{
-      opacity:.85;
-      font-size:.9rem;
+    @media (min-width: 1200px) {
+      .notion-contenedor iframe { height: 82vh; min-height: 700px; }
     }
-
-    .contenedor{
-      max-width:1400px;
-      margin:auto;
-      padding:25px;
-    }
-
-    .barra{
-      display:flex;
-      gap:14px;
-      margin-bottom:20px;
-      flex-wrap:wrap;
-    }
-
-    .barra input,
-    .barra select{
-      padding:12px 14px;
-      border-radius:10px;
-      border:1px solid #cfd8ef;
-      font-size:.95rem;
-      flex:1;
-      min-width:220px;
-      background:white;
-    }
-
-    .tabla-wrapper{
-      background:white;
-      border-radius:14px;
-      overflow:hidden;
-      box-shadow:0 4px 24px rgba(0,0,0,0.08);
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-    }
-
-    thead{
-      background:#0d2a6e;
-      color:white;
-    }
-
-    th,td{
-      padding:14px 16px;
-      text-align:left;
-      border-bottom:1px solid #edf1fa;
-      font-size:.93rem;
-    }
-
-    tbody tr:hover{
-      background:#f7f9ff;
-    }
-
-    .loading{
-      text-align:center;
-      padding:40px;
-      color:#5c6f9c;
-    }
-
-    @media(max-width:768px){
-
-      table{
-        display:block;
-        overflow-x:auto;
-      }
-
-      th,td{
-        min-width:180px;
-      }
-
-    }
-
   </style>
 </head>
-
 <body>
-
-<header>
-  <h1>AAPM</h1>
-  <p>Asociación Agentes de Propaganda Médica · República Argentina</p>
-</header>
-
-<div class="contenedor">
-
-  <div class="barra">
-
-    <input
-      type="text"
-      id="buscador"
-      placeholder="Buscar médico, ciudad o especialidad..."
-    />
-
-    <select id="filtroEspecialidad">
-      <option value="">Todas las especialidades</option>
-    </select>
-
-  </div>
-
-  <div class="tabla-wrapper">
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>Médico</th>
-          <th>Especialidad</th>
-          <th>Ciudad</th>
-          <th>Teléfono</th>
-          <th>Dirección</th>
-        </tr>
-      </thead>
-
-      <tbody id="tablaMedicos">
-
-        <tr>
-          <td colspan="5" class="loading">
-            Cargando directorio...
-          </td>
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-<script>
-
-const API_URL = 'https://script.google.com/macros/s/AKfycbxHK-v2YcLXfgX-AP2GqTSmvmtrjWR3fQ1IVEp1BjHdlQVIXYLul__78KwWaDQKcK8ieg/exec';
-
-
-
-let medicos = [];
-
-
-
-async function cargarDatos(){
-
-  try{
-
-    console.log("Consultando API...");
-
-    const response = await fetch(API_URL,{
-      method:'GET',
-      mode:'cors'
-    });
-
-    console.log(response);
-
-    medicos = await response.json();
-
-    console.log(medicos);
-
-    renderTabla(medicos);
-
-    cargarEspecialidades();
-
-  }
-  catch(error){
-
-    console.error(error);
-
-    document.getElementById('tablaMedicos').innerHTML = `
-      <tr>
-        <td colspan="5" class="loading">
-          Error cargando datos.
-        </td>
-      </tr>
-    `;
-
-  }
-
-}
-
-
-
-function renderTabla(datos){
-
-  const tbody = document.getElementById('tablaMedicos');
-
-  if(!datos.length){
-
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="5" class="loading">
-          No se encontraron resultados.
-        </td>
-      </tr>
-    `;
-
-    return;
-  }
-
-  tbody.innerHTML = datos.map(medico => `
-
-    <tr>
-      <td>${medico.nombre || ''}</td>
-      <td>${medico.especialidad || ''}</td>
-      <td>${medico.ciudad || ''}</td>
-      <td>${medico.telefono || ''}</td>
-      <td>${medico.direccion || ''}</td>
-    </tr>
-
-  `).join('');
-
-}
-
-
-
-function cargarEspecialidades(){
-
-  const select = document.getElementById('filtroEspecialidad');
-
-  const especialidades = [
-    ...new Set(
-      medicos
-        .map(m => m.especialidad)
-        .filter(Boolean)
-    )
-  ].sort();
-
-  especialidades.forEach(especialidad => {
-
-    const option = document.createElement('option');
-
-    option.value = especialidad;
-    option.textContent = especialidad;
-
-    select.appendChild(option);
-
-  });
-
-}
-
-
-
-function aplicarFiltros(){
-
-  const texto = document
-    .getElementById('buscador')
-    .value
-    .toLowerCase();
-
-  const especialidad = document
-    .getElementById('filtroEspecialidad')
-    .value;
-
-  const filtrados = medicos.filter(medico => {
-
-    const coincideTexto =
-
-      (medico.nombre || '')
-        .toLowerCase()
-        .includes(texto)
-
-      ||
-
-      (medico.ciudad || '')
-        .toLowerCase()
-        .includes(texto)
-
-      ||
-
-      (medico.especialidad || '')
-        .toLowerCase()
-        .includes(texto);
-
-    const coincideEspecialidad =
-
-      !especialidad ||
-      medico.especialidad === especialidad;
-
-    return coincideTexto && coincideEspecialidad;
-
-  });
-
-  renderTabla(filtrados);
-
-}
-
-
-
-window.addEventListener('DOMContentLoaded', () => {
-
-  document
-    .getElementById('buscador')
-    .addEventListener('input', aplicarFiltros);
-
-  document
-    .getElementById('filtroEspecialidad')
-    .addEventListener('change', aplicarFiltros);
-
-  cargarDatos();
-
-});
-
-</script>
-
+  <header>
+    <div class="logo-wrapper">
+      <img src="aapm.png" alt="Logo AAPM" />
+    </div>
+    <div class="header-texto">
+      <h1>AAPM</h1>
+      <div class="divider"></div>
+      <p class="subtitulo">Asociación Agentes de Propaganda Médica · Rep. Argentina</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="etiqueta-directorio">
+      <span>Directorio de Médicos</span>
+    </div>
+    <div class="notion-contenedor">
+      <iframe
+      src="https://www.notion.so/AAPM-361c1428ec0b806b8a2fc7abec0fae6a"
+      width="100%"
+      height="900"
+      style="border:none;border-radius:12px;"
+    ></iframe>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 AAPM · Asociación Agentes de Propaganda Médica · República Argentina
+  </footer>
 </body>
 </html>
